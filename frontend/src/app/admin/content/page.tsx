@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Film, FileUp, Link as LinkIcon } from "lucide-react";
+import { ContentPreview } from "@/components/ContentPreview";
 import { api } from "@/lib/api";
 
 type Course = { id: string; name: string };
@@ -29,6 +30,7 @@ export default function ContentPage() {
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [preview, setPreview] = useState<ContentRow | null>(null);
 
   const { register, handleSubmit, reset } = useForm<UploadForm>({
     defaultValues: { type: "PDF" },
@@ -51,15 +53,24 @@ export default function ContentPage() {
   const loadContent = useCallback(async () => {
     if (!subjectId) {
       setItems([]);
+      setPreview(null);
       return;
     }
     try {
       const res = await api.get<ContentRow[]>(
         `/contents?subjectId=${subjectId}`,
       );
-      setItems(Array.isArray(res.data) ? res.data : []);
+      const data = Array.isArray(res.data) ? res.data : [];
+      setItems(data);
+      setPreview((prev) => {
+        if (prev && data.some((x) => x.id === prev.id)) {
+          return data.find((x) => x.id === prev.id) ?? null;
+        }
+        return data[0] ?? null;
+      });
     } catch {
       setItems([]);
+      setPreview(null);
     }
   }, [subjectId]);
 
@@ -104,7 +115,8 @@ export default function ContentPage() {
       <div>
         <h2 className="text-lg font-semibold text-slate-900">Content library</h2>
         <p className="text-sm text-[var(--lms-muted)]">
-          Upload lessons — stored in S3, delivered via CloudFront URLs.
+          Upload lessons — preview video/PDF below; files live in S3 with
+          CloudFront URLs.
         </p>
       </div>
 
@@ -207,25 +219,47 @@ export default function ContentPage() {
             </li>
           ) : (
             items.map((row) => (
-              <li key={row.id} className="flex flex-col gap-2 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <p className="font-medium text-slate-900">{row.title}</p>
-                  <p className="text-xs text-slate-500">{row.type}</p>
-                </div>
-                <a
-                  href={row.fileUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700"
+              <li key={row.id}>
+                <button
+                  type="button"
+                  onClick={() => setPreview(row)}
+                  className={`flex w-full flex-col gap-2 px-6 py-4 text-left transition sm:flex-row sm:items-center sm:justify-between ${
+                    preview?.id === row.id ? "bg-blue-50/80" : "hover:bg-slate-50"
+                  }`}
                 >
-                  <LinkIcon className="h-4 w-4" />
-                  Open URL
-                </a>
+                  <div>
+                    <p className="font-medium text-slate-900">{row.title}</p>
+                    <p className="text-xs text-slate-500">{row.type}</p>
+                  </div>
+                  <span className="inline-flex items-center gap-1 text-sm font-medium text-blue-600">
+                    <LinkIcon className="h-4 w-4" />
+                    {preview?.id === row.id ? "Previewing" : "Preview"}
+                  </span>
+                </button>
               </li>
             ))
           )}
         </ul>
       </div>
+
+      {preview && subjectId && (
+        <div className="space-y-2">
+          <h3 className="text-sm font-semibold text-slate-800">Preview</h3>
+          <ContentPreview
+            title={preview.title}
+            type={preview.type}
+            fileUrl={preview.fileUrl}
+          />
+          <a
+            href={preview.fileUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex text-sm font-medium text-blue-600 hover:text-blue-700"
+          >
+            Open in new tab
+          </a>
+        </div>
+      )}
     </div>
   );
 }

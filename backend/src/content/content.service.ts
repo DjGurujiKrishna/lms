@@ -1,6 +1,8 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
+  NotFoundException,
   UnsupportedMediaTypeException,
 } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
@@ -55,6 +57,32 @@ export class ContentService {
       },
       orderBy: { title: 'asc' },
     });
+  }
+
+  /** Same as listBySubject but requires enrollment in the subject's course (student). */
+  async listBySubjectForStudent(
+    instituteId: string,
+    studentId: string,
+    subjectId: string,
+  ) {
+    const subject = await this.prisma.subject.findFirst({
+      where: {
+        id: subjectId,
+        course: { instituteId },
+      },
+      select: { courseId: true },
+    });
+    if (!subject) {
+      throw new NotFoundException('Subject not found');
+    }
+    const enrollment = await this.prisma.enrollment.findFirst({
+      where: { studentId, courseId: subject.courseId },
+      select: { id: true },
+    });
+    if (!enrollment) {
+      throw new ForbiddenException('You must be enrolled in this course');
+    }
+    return this.listBySubject(instituteId, subjectId);
   }
 
   async upload(

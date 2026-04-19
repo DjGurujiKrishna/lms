@@ -9,6 +9,7 @@ import { randomBytes } from 'node:crypto';
 import { parse } from 'csv-parse/sync';
 import { PrismaClientKnownRequestError } from '@prisma/client-runtime-utils';
 import { ROLE_STUDENT } from '../auth/constants.js';
+import { MailService } from '../mail/mail.service.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { forInstitute } from '../tenant/tenant-scope.js';
 import type { CreateUserDto } from './dto/create-user.dto.js';
@@ -26,7 +27,10 @@ const userPublicSelect = {
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly mailService: MailService,
+  ) {}
 
   async create(instituteId: string, dto: CreateUserDto) {
     const email = dto.email.trim().toLowerCase();
@@ -46,10 +50,20 @@ export class UsersService {
         },
         select: userPublicSelect,
       });
+      const temporaryPassword = dto.password ? undefined : password;
+      if (temporaryPassword) {
+        void this.mailService
+          .sendLoginCredentials({
+            to: email,
+            name: user.name,
+            password: temporaryPassword,
+          })
+          .catch(() => undefined);
+      }
       return {
         user,
         /** Only when password was auto-generated (no password in request). */
-        temporaryPassword: dto.password ? undefined : password,
+        temporaryPassword,
       };
     } catch (err) {
       if (

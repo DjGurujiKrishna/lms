@@ -9,6 +9,8 @@
   --lms-card: #ffffff;
   --lms-muted: #64748b;
   --lms-border: #e2e8f0;
+  --lms-radius-lg: 1rem;
+  --lms-radius-xl: 1.5rem;
 }
 
 @theme inline {
@@ -22,4 +24,10 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+@media (max-width: 768px) {
+  body {
+    -webkit-text-size-adjust: 100%;
+  }
 }

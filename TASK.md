@@ -315,7 +315,7 @@ Pages:
 
 ---
 
-## STEP 16 — Student Dashboard
+## STEP 16 — Student Dashboard ✅ *Completed*
 
 Pages:
 
@@ -326,14 +326,14 @@ Pages:
 
 ---
 
-## STEP 17 — File Upload UI
+## STEP 17 — File Upload UI ✅ *Completed*
 
 * Upload video/pdf
 * Show preview
 
 ---
 
-## STEP 18 — Email System (AWS SES)
+## STEP 18 — Email System (AWS SES) ✅ *Completed*
 
 Use Amazon SES
 
@@ -349,7 +349,7 @@ Use Amazon SES
 
 ---
 
-## STEP 19 — Basic UI Polish
+## STEP 19 — Basic UI Polish ✅ *Completed*
 
 * Clean layout
 * Simple navigation

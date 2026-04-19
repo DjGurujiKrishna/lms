@@ -14,6 +14,7 @@ import { CoursesService } from '../courses/courses.service.js';
 import type { CreateExamDto } from './dto/create-exam.dto.js';
 import type { CreateQuestionDto } from './dto/create-question.dto.js';
 import type { SubmitExamDto } from './dto/submit-exam.dto.js';
+import { MailService } from '../mail/mail.service.js';
 
 const GRACE_SECONDS = 5;
 
@@ -22,12 +23,44 @@ export class ExamsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly coursesService: CoursesService,
+    private readonly mailService: MailService,
   ) {}
 
   async findAll(instituteId: string, courseId?: string) {
     return this.prisma.exam.findMany({
       where: {
         ...(courseId ? { courseId } : {}),
+        course: { instituteId },
+      },
+      select: {
+        id: true,
+        title: true,
+        courseId: true,
+        duration: true,
+      },
+      orderBy: { title: 'asc' },
+    });
+  }
+
+  /** Exams for a course when the student is enrolled (TASK step 16). */
+  async findForEnrolledStudent(
+    instituteId: string,
+    studentId: string,
+    courseId: string,
+  ) {
+    await this.coursesService.ensureCourseInTenant(courseId, instituteId);
+
+    const enrollment = await this.prisma.enrollment.findFirst({
+      where: { studentId, courseId },
+      select: { id: true },
+    });
+    if (!enrollment) {
+      throw new ForbiddenException('You must be enrolled in this course');
+    }
+
+    return this.prisma.exam.findMany({
+      where: {
+        courseId,
         course: { instituteId },
       },
       select: {
@@ -207,6 +240,20 @@ export class ExamsService {
         studentId: true,
       },
     });
+
+    const studentRow = await this.prisma.user.findUnique({
+      where: { id: studentId },
+      select: { email: true, name: true },
+    });
+    if (studentRow?.email) {
+      void this.mailService
+        .sendPlain({
+          to: studentRow.email,
+          subject: `Exam result: ${exam.title}`,
+          text: `Hi ${studentRow.name},\n\nYour score for "${exam.title}" is ${score}% (${correct}/${questions.length} correct).\n`,
+        })
+        .catch(() => undefined);
+    }
 
     return {
       ...result,

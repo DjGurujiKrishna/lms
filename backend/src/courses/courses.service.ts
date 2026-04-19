@@ -69,4 +69,32 @@ export class CoursesService {
       throw new NotFoundException('Course not found');
     }
   }
+
+  /** Enrolled courses with subjects — student dashboard (TASK step 16). */
+  async findEnrolledWithSubjects(instituteId: string, studentId: string) {
+    const rows = await this.prisma.enrollment.findMany({
+      where: {
+        studentId,
+        course: { instituteId },
+      },
+      include: {
+        course: {
+          select: {
+            id: true,
+            name: true,
+            subjects: {
+              select: { id: true, name: true },
+              orderBy: { name: 'asc' },
+            },
+          },
+        },
+      },
+      orderBy: { course: { name: 'asc' } },
+    });
+
+    return rows.map((e) => ({
+      enrollmentId: e.id,
+      course: e.course,
+    }));
+  }
 }

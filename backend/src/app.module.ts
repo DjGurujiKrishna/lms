@@ -14,6 +14,7 @@ import { StorageModule } from './storage/storage.module.js';
 import { SubjectsModule } from './subjects/subjects.module.js';
 import { TenantModule } from './tenant/tenant.module.js';
 import { UsersModule } from './users/users.module.js';
+import { MailModule } from './mail/mail.module.js';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { UsersModule } from './users/users.module.js';
     EnrollmentModule,
     ExamsModule,
     ResultsModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],
