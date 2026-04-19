@@ -5,7 +5,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Prisma } from '../../generated/prisma/client.js';
+import { Prisma } from '@prisma/client';
 import { ROLE_STUDENT } from '../auth/constants.js';
 import { isCurriculumStaff } from '../auth/access.constants.js';
 import type { JwtUser } from '../auth/interfaces/jwt-user.interface.js';

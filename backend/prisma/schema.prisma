@@ -1,8 +1,7 @@
 // LMS MVP — PostgreSQL (Supabase). Tenant isolation via instituteId on core rows.
 
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
