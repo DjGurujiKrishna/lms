@@ -256,7 +256,7 @@ npm install @aws-sdk/client-s3
 
 ---
 
-## STEP 11 — Student Enrollment
+## STEP 11 — Student Enrollment ✅ *Completed*
 
 * Assign students to course
 
@@ -266,7 +266,7 @@ npm install @aws-sdk/client-s3
 
 ---
 
-## STEP 12 — Exam System (Basic)
+## STEP 12 — Exam System (Basic) ✅ *Completed*
 
 ### Features:
 
@@ -283,7 +283,7 @@ npm install @aws-sdk/client-s3
 
 ---
 
-## STEP 13 — Result System
+## STEP 13 — Result System ✅ *Completed*
 
 * Calculate score
 * Store result

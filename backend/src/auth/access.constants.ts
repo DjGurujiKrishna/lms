@@ -20,3 +20,7 @@ export const MANAGE_CURRICULUM_ROLES = [
   ROLE_INSTITUTION_ADMIN,
   ROLE_TEACHER,
 ] as const;
+
+export function isCurriculumStaff(role: string): boolean {
+  return MANAGE_CURRICULUM_ROLES.some((r) => r === role);
+}
