@@ -1,0 +1,5 @@
+create necessary folders and files. always keep the structure.
+Keep the secrets etc in .env file. don't expose in code.
+don't use imojies in code
+always use industrial standard production ready code.
+don't exceed code of ech file more than 800 lines.
