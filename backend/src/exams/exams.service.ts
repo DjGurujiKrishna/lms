@@ -24,6 +24,22 @@ export class ExamsService {
     private readonly coursesService: CoursesService,
   ) {}
 
+  async findAll(instituteId: string, courseId?: string) {
+    return this.prisma.exam.findMany({
+      where: {
+        ...(courseId ? { courseId } : {}),
+        course: { instituteId },
+      },
+      select: {
+        id: true,
+        title: true,
+        courseId: true,
+        duration: true,
+      },
+      orderBy: { title: 'asc' },
+    });
+  }
+
   async createExam(instituteId: string, dto: CreateExamDto) {
     await this.coursesService.ensureCourseInTenant(dto.courseId, instituteId);
     return this.prisma.exam.create({

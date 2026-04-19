@@ -2,7 +2,9 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Get,
   Post,
+  Query,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -24,6 +26,18 @@ const MAX_BYTES = 512 * 1024 * 1024;
 @Roles(...MANAGE_CURRICULUM_ROLES)
 export class ContentController {
   constructor(private readonly contentService: ContentService) {}
+
+  /** List media for a subject (tenant-scoped). */
+  @Get()
+  list(
+    @CurrentInstituteId() instituteId: string,
+    @Query('subjectId') subjectId: string | undefined,
+  ) {
+    if (!subjectId) {
+      throw new BadRequestException('subjectId query parameter is required');
+    }
+    return this.contentService.listBySubject(instituteId, subjectId);
+  }
 
   /**
    * Multipart: field `file` + form fields `title`, `subjectId`, `type` (`Video` | `PDF`).

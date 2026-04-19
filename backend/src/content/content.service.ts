@@ -42,6 +42,21 @@ export class ContentService {
     private readonly storage: S3StorageService,
   ) {}
 
+  async listBySubject(instituteId: string, subjectId: string) {
+    await this.subjectsService.ensureSubjectInTenant(subjectId, instituteId);
+    return this.prisma.content.findMany({
+      where: { subjectId },
+      select: {
+        id: true,
+        title: true,
+        type: true,
+        fileUrl: true,
+        subjectId: true,
+      },
+      orderBy: { title: 'asc' },
+    });
+  }
+
   async upload(
     instituteId: string,
     dto: UploadContentDto,

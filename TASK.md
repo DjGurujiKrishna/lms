@@ -294,7 +294,7 @@ npm install @aws-sdk/client-s3
 
 ---
 
-## STEP 14 — Frontend Auth
+## STEP 14 — Frontend Auth ✅ *Completed*
 
 * Login page
 * Store JWT (localStorage)
@@ -302,7 +302,7 @@ npm install @aws-sdk/client-s3
 
 ---
 
-## STEP 15 — Admin Dashboard UI
+## STEP 15 — Admin Dashboard UI ✅ *Completed*
 
 Pages:
 

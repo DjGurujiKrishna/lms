@@ -5,6 +5,7 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { MANAGE_CURRICULUM_ROLES } from '../auth/access.constants.js';
@@ -22,6 +23,16 @@ import { ExamsService } from './exams.service.js';
 export class ExamsController {
   constructor(private readonly examsService: ExamsService) {}
 
+  @Get()
+  @UseGuards(RoleGuard)
+  @Roles(...MANAGE_CURRICULUM_ROLES)
+  list(
+    @CurrentInstituteId() instituteId: string,
+    @Query('courseId') courseId?: string,
+  ) {
+    return this.examsService.findAll(instituteId, courseId);
+  }
+
   @Post()
   @UseGuards(RoleGuard)
   @Roles(...MANAGE_CURRICULUM_ROLES)
@@ -34,7 +45,7 @@ export class ExamsController {
 
   /** Staff see correct answers; enrolled students see questions without `answer`. */
   @Get(':id')
-  findOne(
+  findOneById(
     @Param('id', ParseUUIDPipe) id: string,
     @CurrentInstituteId() instituteId: string,
     @CurrentUser() user: JwtUser,
