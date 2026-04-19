@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CoursesService } from '../courses/courses.service.js';
 import type { CreateSubjectDto } from './dto/create-subject.dto.js';
@@ -34,5 +34,19 @@ export class SubjectsService {
       select: subjectSelect,
       orderBy: { name: 'asc' },
     });
+  }
+
+  /** Ensures subject exists and belongs to a course in this institute (tenant). */
+  async ensureSubjectInTenant(subjectId: string, instituteId: string) {
+    const row = await this.prisma.subject.findFirst({
+      where: {
+        id: subjectId,
+        course: { instituteId },
+      },
+      select: { id: true },
+    });
+    if (!row) {
+      throw new NotFoundException('Subject not found');
+    }
   }
 }

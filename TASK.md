@@ -228,7 +228,7 @@ where: { instituteId: user.instituteId }
 
 ---
 
-## STEP 10 — Content Upload (AWS S3) (use aws cloud front also)
+## STEP 10 — Content Upload (AWS S3) (use aws cloud front also) ✅ *Completed*
 
 Use Amazon S3
 
