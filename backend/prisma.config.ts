@@ -7,6 +7,8 @@ export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations",
+    /** Prisma 7 reads seed from here (not package.json). */
+    seed: "cross-env NODE_ENV=development tsx prisma/seed.ts",
   },
   datasource: {
     url: process.env["DATABASE_URL"],

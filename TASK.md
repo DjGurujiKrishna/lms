@@ -2,7 +2,7 @@
 
 ---
 
-## STEP 1 — Project Setup
+## STEP 1 — Project Setup ✅ *Completed*
 
 ### Backend (Nest.js)
 
@@ -22,6 +22,7 @@
   npx prisma init
   ```
 
+
 ---
 
 ### Frontend (Next.js)
@@ -39,7 +40,7 @@
 
 ---
 
-## STEP 2 — Database Setup (Supabase)
+## STEP 2 — Database Setup (Supabase) ✅ *Completed*
 
 * Create project in Supabase
 * Copy PostgreSQL connection string
@@ -126,7 +127,7 @@ npx prisma migrate dev
 
 ---
 
-## STEP 3 — Auth System (JWT)
+## STEP 3 — Auth System (JWT) ✅ *Completed*
 
 ### Backend
 
@@ -145,7 +146,7 @@ npx prisma migrate dev
 
 ---
 
-## STEP 4 — Role-Based Access
+## STEP 4 — Role-Based Access ✅ *Completed*
 
 Roles:
 
@@ -166,7 +167,7 @@ TEACHER
 
 ---
 
-## STEP 5 — Multi-Tenant Logic
+## STEP 5 — Multi-Tenant Logic ✅ *Completed*
 
 * Every request must include:
 
@@ -180,7 +181,7 @@ where: { instituteId: user.instituteId }
 
 ---
 
-## STEP 6 — Institute Module
+## STEP 6 — Institute Module ✅ *Completed*
 
 * Create institute on signup
 * Generate subdomain:
@@ -189,7 +190,7 @@ where: { instituteId: user.instituteId }
 
 ---
 
-## STEP 7 — User Management
+## STEP 7 — User Management ✅ *Completed*
 
 ### Features:
 
@@ -205,7 +206,7 @@ where: { instituteId: user.instituteId }
 
 ---
 
-## STEP 8 — Course Module
+## STEP 8 — Course Module ✅ *Completed*
 
 ### APIs:
 
@@ -216,7 +217,7 @@ where: { instituteId: user.instituteId }
 
 ---
 
-## STEP 9 — Subject Module
+## STEP 9 — Subject Module ✅ *Completed*
 
 * Add subjects under course
 
@@ -227,7 +228,7 @@ where: { instituteId: user.instituteId }
 
 ---
 
-## STEP 10 — Content Upload (AWS S3)
+## STEP 10 — Content Upload (AWS S3) (use aws cloud front also) ✅ *Completed*
 
 Use Amazon S3
 
@@ -255,7 +256,7 @@ npm install @aws-sdk/client-s3
 
 ---
 
-## STEP 11 — Student Enrollment
+## STEP 11 — Student Enrollment ✅ *Completed*
 
 * Assign students to course
 
@@ -265,7 +266,7 @@ npm install @aws-sdk/client-s3
 
 ---
 
-## STEP 12 — Exam System (Basic)
+## STEP 12 — Exam System (Basic) ✅ *Completed*
 
 ### Features:
 
@@ -282,7 +283,7 @@ npm install @aws-sdk/client-s3
 
 ---
 
-## STEP 13 — Result System
+## STEP 13 — Result System ✅ *Completed*
 
 * Calculate score
 * Store result
@@ -293,7 +294,7 @@ npm install @aws-sdk/client-s3
 
 ---
 
-## STEP 14 — Frontend Auth
+## STEP 14 — Frontend Auth ✅ *Completed*
 
 * Login page
 * Store JWT (localStorage)
@@ -301,7 +302,7 @@ npm install @aws-sdk/client-s3
 
 ---
 
-## STEP 15 — Admin Dashboard UI
+## STEP 15 — Admin Dashboard UI ✅ *Completed*
 
 Pages:
 
@@ -314,7 +315,7 @@ Pages:
 
 ---
 
-## STEP 16 — Student Dashboard
+## STEP 16 — Student Dashboard ✅ *Completed*
 
 Pages:
 
@@ -325,14 +326,14 @@ Pages:
 
 ---
 
-## STEP 17 — File Upload UI
+## STEP 17 — File Upload UI ✅ *Completed*
 
 * Upload video/pdf
 * Show preview
 
 ---
 
-## STEP 18 — Email System (AWS SES)
+## STEP 18 — Email System (AWS SES) ✅ *Completed*
 
 Use Amazon SES
 
@@ -348,7 +349,7 @@ Use Amazon SES
 
 ---
 
-## STEP 19 — Basic UI Polish
+## STEP 19 — Basic UI Polish ✅ *Completed*
 
 * Clean layout
 * Simple navigation
